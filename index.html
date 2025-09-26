@@ -1,18 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game</title>
+    <title>Snake Game - Juego de la Serpiente</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
-    <h1>Snake Game</h1>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
-    <p>Puntuación: <span id="score">0</span></p>
-    <div class="instructions">Usa las flechas del teclado para moverte</div>
-    <button id="playButton" onclick="startGame()">Play</button>
+    <div class="game-container">
+        <header class="game-header">
+            <h1><i class="fas fa-snake"></i> Snake Game</h1>
+            <div class="game-stats">
+                <div class="stat-item">
+                    <i class="fas fa-trophy"></i>
+                    <span>Puntuación: <span id="score">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-crown"></i>
+                    <span>Mejor: <span id="highScore">0</span></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-area">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div id="gameOverlay" class="game-overlay">
+                <div class="overlay-content">
+                    <h2 id="overlayTitle">¡Bienvenido!</h2>
+                    <p id="overlayMessage">Presiona PLAY para comenzar</p>
+                    <div class="game-controls">
+                        <button id="playButton" class="btn btn-primary">
+                            <i class="fas fa-play"></i> JUGAR
+                        </button>
+                        <button id="pauseButton" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-pause"></i> PAUSA
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions-panel">
+            <div class="instructions-section">
+                <h3><i class="fas fa-keyboard"></i> Controles</h3>
+                <div class="controls-grid">
+                    <div class="control-item">
+                        <kbd>↑</kbd> <span>Arriba</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>↓</kbd> <span>Abajo</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>←</kbd> <span>Izquierda</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>→</kbd> <span>Derecha</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mobile-controls" id="mobileControls">
+                <div class="d-pad">
+                    <button class="d-pad-btn up" data-direction="up">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                    <div class="d-pad-middle">
+                        <button class="d-pad-btn left" data-direction="left">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="d-pad-btn right" data-direction="right">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <button class="d-pad-btn down" data-direction="down">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rankings-panel">
+            <h3><i class="fas fa-medal"></i> Mejores Puntuaciones</h3>
+            <div id="rankingsList" class="rankings-list">
+                <div class="no-scores">¡Juega para ver tus puntuaciones!</div>
+            </div>
+            <button id="clearScores" class="btn btn-danger btn-small">
+                <i class="fas fa-trash"></i> Limpiar
+            </button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
+
 </html>
