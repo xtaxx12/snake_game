@@ -6,91 +6,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game - Juego de la Serpiente</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
     <div class="game-container">
         <header class="game-header">
-            <h1><i class="fas fa-snake"></i> Snake Game</h1>
+            <h1>Snake Game</h1>
             <div class="game-stats">
-                <div class="stat-item">
+                <div class="stat-item score-display">
                     <i class="fas fa-trophy"></i>
-                    <span>Puntuación: <span id="score">0</span></span>
+                    <span>Puntuacion: <span id="score" class="score-value">0</span></span>
                 </div>
-                <div class="stat-item">
+                <div class="stat-item level-display">
+                    <i class="fas fa-bolt"></i>
+                    <span>Nivel: <span id="level">1</span></span>
+                </div>
+                <div class="stat-item best-display">
                     <i class="fas fa-crown"></i>
                     <span>Mejor: <span id="highScore">0</span></span>
                 </div>
+                <div class="stat-item combo-display" id="comboDisplay" style="display: none;">
+                    <i class="fas fa-fire"></i>
+                    <span>Combo x<span id="comboCount">0</span></span>
+                </div>
+            </div>
+            <div class="level-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-label" id="progressLabel">Nivel 1</span>
             </div>
         </header>
 
-        <div class="game-area">
-            <canvas id="gameCanvas" width="400" height="400"></canvas>
-            <div id="gameOverlay" class="game-overlay">
-                <div class="overlay-content">
-                    <h2 id="overlayTitle">¡Bienvenido!</h2>
-                    <p id="overlayMessage">Presiona PLAY para comenzar</p>
-                    <div class="game-controls">
-                        <button id="playButton" class="btn btn-primary">
-                            <i class="fas fa-play"></i> JUGAR
-                        </button>
-                        <button id="pauseButton" class="btn btn-secondary" style="display: none;">
-                            <i class="fas fa-pause"></i> PAUSA
-                        </button>
+        <div class="main-content">
+            <div class="sidebar-left">
+                <div class="panel instructions-section">
+                    <h3><i class="fas fa-keyboard"></i> Controles</h3>
+                    <div class="controls-grid">
+                        <div class="control-item">
+                            <kbd><i class="fas fa-arrow-up"></i></kbd> <span>Arriba</span>
+                        </div>
+                        <div class="control-item">
+                            <kbd><i class="fas fa-arrow-down"></i></kbd> <span>Abajo</span>
+                        </div>
+                        <div class="control-item">
+                            <kbd><i class="fas fa-arrow-left"></i></kbd> <span>Izquierda</span>
+                        </div>
+                        <div class="control-item">
+                            <kbd><i class="fas fa-arrow-right"></i></kbd> <span>Derecha</span>
+                        </div>
+                        <div class="control-item full-width">
+                            <kbd>ESPACIO</kbd> <span>Pausa</span>
+                        </div>
                     </div>
+                </div>
+
+                <div class="panel settings-section">
+                    <h3><i class="fas fa-sliders-h"></i> Opciones</h3>
+                    <div class="setting-item">
+                        <label for="wallMode">
+                            <i class="fas fa-border-all"></i> Paredes
+                        </label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="wallMode" checked>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                    <p class="setting-desc" id="wallModeDesc">Chocas con las paredes</p>
+                    <div class="setting-item">
+                        <label for="gridToggle">
+                            <i class="fas fa-th"></i> Cuadricula
+                        </label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="gridToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel food-legend">
+                    <h3><i class="fas fa-apple-alt"></i> Comida</h3>
+                    <div class="legend-item">
+                        <span class="food-icon food-normal"></span>
+                        <div>
+                            <strong>Manzana</strong>
+                            <small>+10 pts</small>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="food-icon food-bonus"></span>
+                        <div>
+                            <strong>Estrella</strong>
+                            <small>+25 pts (temporal)</small>
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="food-icon food-golden"></span>
+                        <div>
+                            <strong>Diamante</strong>
+                            <small>+50 pts (raro)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <canvas id="gameCanvas" width="400" height="400"></canvas>
+                <div id="gameOverlay" class="game-overlay">
+                    <div class="overlay-content">
+                        <h2 id="overlayTitle">Bienvenido!</h2>
+                        <p id="overlayMessage">Presiona JUGAR para comenzar o usa ESPACIO</p>
+                        <div id="gameStats" class="game-over-stats" style="display: none;"></div>
+                        <div class="game-controls">
+                            <button id="playButton" class="btn btn-primary">
+                                <i class="fas fa-play"></i> JUGAR
+                            </button>
+                            <button id="pauseButton" class="btn btn-secondary" style="display: none;">
+                                <i class="fas fa-pause"></i> PAUSA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="floatingScores" class="floating-scores"></div>
+            </div>
+
+            <div class="sidebar-right">
+                <div class="panel rankings-panel">
+                    <h3><i class="fas fa-medal"></i> Top 10</h3>
+                    <div id="rankingsList" class="rankings-list">
+                        <div class="no-scores">Juega para ver tus puntuaciones!</div>
+                    </div>
+                    <button id="clearScores" class="btn btn-danger btn-small">
+                        <i class="fas fa-trash"></i> Limpiar
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="instructions-panel">
-            <div class="instructions-section">
-                <h3><i class="fas fa-keyboard"></i> Controles</h3>
-                <div class="controls-grid">
-                    <div class="control-item">
-                        <kbd>↑</kbd> <span>Arriba</span>
-                    </div>
-                    <div class="control-item">
-                        <kbd>↓</kbd> <span>Abajo</span>
-                    </div>
-                    <div class="control-item">
-                        <kbd>←</kbd> <span>Izquierda</span>
-                    </div>
-                    <div class="control-item">
-                        <kbd>→</kbd> <span>Derecha</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mobile-controls" id="mobileControls">
-                <div class="d-pad">
-                    <button class="d-pad-btn up" data-direction="up">
-                        <i class="fas fa-chevron-up"></i>
+        <div class="mobile-controls" id="mobileControls">
+            <div class="d-pad">
+                <button class="d-pad-btn up" data-direction="up">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+                <div class="d-pad-middle">
+                    <button class="d-pad-btn left" data-direction="left">
+                        <i class="fas fa-chevron-left"></i>
                     </button>
-                    <div class="d-pad-middle">
-                        <button class="d-pad-btn left" data-direction="left">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="d-pad-btn right" data-direction="right">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                    <button class="d-pad-btn down" data-direction="down">
-                        <i class="fas fa-chevron-down"></i>
+                    <button class="d-pad-center" id="mobilePauseBtn">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                    <button class="d-pad-btn right" data-direction="right">
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
+                <button class="d-pad-btn down" data-direction="down">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
             </div>
-        </div>
-
-        <div class="rankings-panel">
-            <h3><i class="fas fa-medal"></i> Mejores Puntuaciones</h3>
-            <div id="rankingsList" class="rankings-list">
-                <div class="no-scores">¡Juega para ver tus puntuaciones!</div>
-            </div>
-            <button id="clearScores" class="btn btn-danger btn-small">
-                <i class="fas fa-trash"></i> Limpiar
-            </button>
         </div>
     </div>
 
